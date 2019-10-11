@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style type="text/css">
+        body {
+            font-family: "Quicksand", sans-serif;
+        }
+
+        .curved {
+            padding: 5px;
+            margin-bottom: 15px;
+            border: 0;
+            border-radius: 0 30px 30px 0;
+            color: #818181;
+        }
+
+        .curved:hover {
+            background: #ef9a9a;
+        }
+
+        h2 {
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        h3 {
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+
+        .titlebtn {
+            font-size: 15px;
+            cursor: pointer;
+            background-color: transparent;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .fab-btn {
+            position: fixed;
+            border-radius: 10px;
+            box-shadow: 15px 15px 25px grey;
+            bottom: 15px;
+            right: 15px;
+            font-size: 25px;
+            cursor: pointer;
+            background-color: #c62828;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            outline: none;
+        }
+
+        .btn-note {
+            background-color: #c62828;
+            color: black;
+        }
+
+        .fab-btn:focus {
+            outline: none;
+        }
+
+        .crd {
+            box-shadow: 10px 10px 20px grey;
+        }
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    </style>
+    <title>Keep Note</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <button class="titlebtn" onclick="toggleNav()"><i class="material-icons">
+            menu
+        </i></button>
+        <h2 style="margin-top: auto; margin-bottom: auto">Musix</h2>
+        <div class="flex-grow-1 flex-1-1-auto d-flex"></div>
+        <button class="titlebtn"><i class="material-icons">
+            more_vert
+        </i></button>
+    </div>
+    <div class="row" style="background: #818181; height: 1px; width: 100%; margin:0"></div>
+    <div class="row" style="height: 10px;"></div>
+    <div class="row">
+        <div class="d-none d-lg-block d-xl-block col-3">
+            <div class="container" style="padding: 10px">
+                <div class="row curved">
+                    <div style="width: 30px"></div>
+                    <i class="material-icons">
+                        emoji_objects
+                    </i>
+                    <div style="width: 50px"></div>
+                    <h3>
+                        All Notes
+                    </h3>
+                </div>
+                <div class="row curved">
+                    <div style="width: 30px"></div>
+                    <i class="material-icons">
+                        notifications_active
+                    </i>
+                    <div style="width: 50px"></div>
+                    <h3>Reminders</h3>
+                </div>
+                <div class="row"
+                     style="width: 100%; height: 1px; background: #a1a1a1; margin: 5px 0 10px;"></div>
+                <div class="row curved">
+                    <div style="width: 30px"></div>
+                    <i class="material-icons">
+                        settings
+                    </i>
+                    <div style="width: 50px"></div>
+                    <h3>
+                        Settings
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="container">
+                <div class="row" style="height: 15px"></div>
+                <div class="row">
+                    <th:block th:each="s:${songs}">
+                        <div class="col-4">
+                            <div class="card h-100 crd" style="margin-bottom: 10px">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h5 class="card-title" th:text="${s.name}"></h5>
+                                        <div class="d-flex flex-1-1-auto flex-grow-1"></div>
+                                        <a th:href="@{|/deleteSong/${s.id}|}" class="btn">
+                                            <i style="color: #818181" class="material-icons">delete</i>
+                                        </a>
+                                    </div>
+                                    <h6 class="card-subtitle mb-2 text-muted" th:text="${s.id}"></h6>
+                                    <p class="card-text" th:text="${s.artist}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button class="fab-btn" data-toggle="modal" data-target="#exampleModalCenter">+note</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">New note!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/saveSong}" th:object="${song}" action="#" method="post">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Id:</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{id}" type="number" class="form-control" placeholder="Note Id"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Name:</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{name}" type="text" class="form-control" id="title"
+                                   placeholder="Note Title"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Artist:</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{artist}" type="text" class="form-control" id="status"
+                                   placeholder="Note Status"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" value="Submit" class="btn btn-note">Save note!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="application/javascript">
+    let isOpen = true;
+
+    function toggleNav() {
+        if (isOpen) {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            isOpen = false;
+        } else {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            isOpen = true;
+        }
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
