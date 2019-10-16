@@ -113,7 +113,7 @@
                         </h3>
                     </div>
                 </a>
-                <a th:href="@{/topArtists}" style="text-decoration: none">
+                <a th:href="@{/top}" style="text-decoration: none">
                     <div class="row curved">
                         <div style="width: 30px"></div>
                         <i class="material-icons">
@@ -166,40 +166,26 @@
         <div class="col">
             <div class="container">
                 <div class="row" style="height: 15px"></div>
-                <h2>Top tracks this week</h2>
+                <h2>Top Artists this week</h2>
                 <div class="row" style="height: 15px"></div>
                 <div class="row">
-                    <th:block th:each="t:${tracks}">
+                    <th:block th:each="a:${artists}">
                         <div class="col col-sm-6 col-md-4">
-                            <div class="card shadow" style="margin: 10px; height: 90%">
+                            <div class="card shadow" style="margin: 20px; height: 80%">
                                 <div class="card-body">
                                     <table>
                                         <tbody>
-                                        <tr style="height: 31px">
-                                            <td><h5 class="card-title"
+                                        <tr>
+                                            <td><a th:href="${a.url}">
+                                                <h5 class="card-title"
                                                     style="overflow: hidden; text-overflow: ellipsis;"
-                                                    th:styleappend="'color:'+ ${images.get(t.name)}"
-                                                    th:text="${t.name}"></h5></td>
-                                            <td>
-                                                <a th:href="@{'/saveTrack/'+${t.id}}"
-                                                   style="color: gray; text-align: right;">
-                                                    <i class="material-icons">
-                                                        playlist_add
-                                                    </i>
-                                                </a>
+                                                    th:styleappend="'color:'+ ${images.get(a.name)}"
+                                                    th:text="${a.name}"></h5>
+                                            </a>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div class="row" style="height: 1px; background: gray"></div>
-                                    <div style="margin: 5px; padding: 5px">
-                                        <p class="card-text" th:text="'Artist: '+${t.artist.name}"></p>
-                                        <p class="card-text" th:text="'Duration: '+${t.duration}+' seconds'"></p>
-                                        <p>
-                                            <span class="card-text" th:text="'Url: '"></span><a th:href="${t.url}">click
-                                            here</a>
-                                        </p>
-                                    </div>
                                 </div>
                             </div>
                         </div>

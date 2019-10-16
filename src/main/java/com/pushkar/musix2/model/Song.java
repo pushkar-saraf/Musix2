@@ -1,43 +1,32 @@
 package com.pushkar.musix2.model;
 
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "songs")
-public class Song {
+@PropertySource("classpath:application.properties")
+public @Data class Song {
     @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column(name = "id")
+    private String id;
 
     @Column(name="name")
+    @Value("${song.name}")
     private String name = "Song";
 
-    @Column(name = "artist")
-    private String artist = "Artist";
+    @ManyToOne
+    @JoinColumn(name = "artist")
+    private Artist artist = new Artist();
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "duration")
+    private int duration;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
+    @Column(name = "url")
+    private String url;
 
     @Override
     public String toString() {
